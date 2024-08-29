@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const loginRouter = require("./API/login").router; 
 const testRouter = require("./API/test").router;   
-
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -17,6 +16,7 @@ app.use(
         origin: "*",
     })
 );
+
 
 app.use(bodyParser.json());
 app.use("/", testRouter); 

@@ -1,9 +1,8 @@
-const express = require("express");
-
+const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('Welcome to my api UWU.');
+    res.send('Welcome to my API UWU.');
 });
 
-module.exports = router;
+module.exports = { router };

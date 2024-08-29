@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const index = require("./API/login").router;
-const index = require("./API/test").router;
+const loginRouter = require("./API/login").router; // Correct path and variable name
+const testRouter = require("./API/test").router;   // Correct path and variable name
 
 const bodyParser = require("body-parser");
 
@@ -14,9 +14,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
-app.use("/", test);
-app.use("/login", login);
-
-
+app.use("/", testRouter);   // Use the testRouter here
+app.use("/login", loginRouter); // Use the loginRouter here
 
 module.exports = app;

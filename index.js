@@ -1,11 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-const loginRouter = require("./API/login").router; // Correct path and variable name
-const testRouter = require("./API/test").router;   // Correct path and variable name
+const loginRouter = require("./API/login").router; 
+const testRouter = require("./API/test").router;   
 
 const bodyParser = require("body-parser");
 
 const app = express();
+
+const PORT = 4000;
+app.listen(PORT, () => {
+    console.log(`API LISTENING ON PORT ${PORT}`);
+});
 
 app.use(
     cors({
@@ -14,7 +19,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
-app.use("/", testRouter);   // Use the testRouter here
-app.use("/login", loginRouter); // Use the loginRouter here
+app.use("/", testRouter); 
+app.use("/login", loginRouter); 
 
 module.exports = app;

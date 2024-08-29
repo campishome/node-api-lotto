@@ -1,13 +1,22 @@
-const express = require('express')
-const app = express()
-const PORT = 4000
+const express = require("express");
+const cors = require("cors");
+const index = require("./API/login").router;
+const index = require("./API/test").router;
 
-app.listen(PORT,()=>{
-    console.log(`API Listening on PORT ${PORT}`)
-})
+const bodyParser = require("body-parser");
 
-app.get('/',(req,res)=>{
-    res.send('Hello world!!!')
-})
+const app = express();
 
-module.exports = app
+app.use(
+    cors({
+        origin: "*",
+    })
+);
+
+app.use(bodyParser.json());
+app.use("/", test);
+app.use("/login", login);
+
+
+
+module.exports = app;

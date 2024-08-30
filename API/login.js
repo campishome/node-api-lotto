@@ -41,9 +41,9 @@ router.post('/register', async (req, res) => {
             return res.status(400).send('User already exists with this phone number or email');
         }
 
-        // Insert new user into the database
-        const insertQuery = 'INSERT INTO User (user_name, phone, email, password,user_type) VALUES (?, ?, ?, ?,?)';
-        await db.query(insertQuery, [username, phone, email, password,'c']);
+        // Insert new user into the database with a default user_type of 'c'
+        const insertQuery = 'INSERT INTO User (user_name, phone, email, password, user_type) VALUES (?, ?, ?, ?, ?)';
+        await db.query(insertQuery, [username, phone, email, password, 'c']);
 
         res.status(201).send('User registered successfully');
     } catch (error) {
@@ -51,5 +51,6 @@ router.post('/register', async (req, res) => {
         res.status(500).send('Error registering user');
     }
 });
+
 
 module.exports = { router };

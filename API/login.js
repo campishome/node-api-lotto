@@ -32,21 +32,28 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     const { username, phone, email, password } = req.body;
 
+    // Validate input data
+    if (!username || !phone || !email || !password) {
+        return res.status(400).json({ message: "All fields (username, phone, email, password) are required" });
+    }
+
     try {
+        // Check for existing user by phone or email
         const checkQuery = 'SELECT user_id FROM User WHERE phone = ? OR email = ?';
         const [existingUser] = await db.query(checkQuery, [phone, email]);
 
         if (existingUser.length > 0) {
-            return res.status(400).send('User already exists with this phone number or email');
+            return res.status(400).json({ message: 'User already exists with this phone number or email' });
         }
 
+        // Insert the new user
         const insertQuery = 'INSERT INTO User (user_name, phone, email, password, user_type) VALUES (?, ?, ?, ?, ?)';
         await db.query(insertQuery, [username, phone, email, password, 'c']);
 
-        res.status(201).send('User registered successfully');
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.error('Error registering user:', error.message); // Log the detailed error
-        res.status(500).json({ message: 'Error registering user', error: error.message }); // Send detailed error message to client (for development)
+        console.error('Error registering user:', error.message); // Log error details
+        res.status(500).json({ message: 'Error registering user', error: error.message });
     }
 });
 

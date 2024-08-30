@@ -42,8 +42,8 @@ router.post('/register', async (req, res) => {
         }
 
         // Insert new user into the database
-        const insertQuery = 'INSERT INTO User (user_name, phone, email, password) VALUES (?, ?, ?, ?)';
-        await db.query(insertQuery, [username, phone, email, password]);
+        const insertQuery = 'INSERT INTO User (user_name, phone, email, password,user_type) VALUES (?, ?, ?, ?,?)';
+        await db.query(insertQuery, [username, phone, email, password,'c']);
 
         res.status(201).send('User registered successfully');
     } catch (error) {

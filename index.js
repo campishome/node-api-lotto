@@ -34,6 +34,6 @@ app.listen(PORT, () => {
 
 app.use(bodyParser.json());
 app.use("/", testRouter); 
-app.use("/login", loginRouter); 
+app.use("/users", loginRouter); 
 
 module.exports = app;

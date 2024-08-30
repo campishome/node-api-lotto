@@ -1,8 +1,8 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-// router.get('/', (req, res) => {
-//     res.send('Welcome to test UWU.');
-// });
+router.get('/', (req, res) => {
+    res.send('Welcome to test UWU.');
+});
 
-// module.exports = { router };
+module.exports = { router };

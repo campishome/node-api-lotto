@@ -1,8 +1,14 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-// router.get('/', (req, res) => {
-//     res.send('Login API');
-// });
 
-// module.exports = { router };
+router.get('/', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM User');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching users');
+    }
+});
+
+module.exports = { router };

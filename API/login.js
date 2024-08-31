@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+
 router.post('/login', async (req, res) => {
     const { phone, password } = req.body; // Destructuring phone and password from request body
 
@@ -57,6 +58,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
+//api check all phone
+//
 
 module.exports = { router };

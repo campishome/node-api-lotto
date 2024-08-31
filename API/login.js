@@ -39,8 +39,8 @@ router.post('/register', async (req, res) => {
 
     try {
         // Check for existing user by phone or email
-        const checkQuery = 'SELECT user_id FROM Customer WHERE user_phone = ? OR user_email = ?';
-        const [existingUser] = await db.query(checkQuery, [phone, email]);
+        const checkQuery = 'SELECT user_id FROM Customer WHERE user_phone = ?';
+        const [existingUser] = await db.query(checkQuery, [phone]);
 
         if (existingUser.length > 0) {
             return res.status(400).json({ message: 'User already exists with this phone number or email' });

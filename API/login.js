@@ -4,7 +4,7 @@ const db = require("../dbconnect");
 
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type FROM Customer');
+        const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type FROM Customer WHERE user_type != "a"');
         res.json(rows);
     } catch (error) {
         res.status(500).send('Error fetching users');

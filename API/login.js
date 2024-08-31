@@ -4,7 +4,7 @@ const db = require("../dbconnect");
 
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT user_id,user_type,user_name,phone FROM User');
+        const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type FROM Customer');
         res.json(rows);
     } catch (error) {
         res.status(500).send('Error fetching users');
@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
     const { phone, password } = req.body; // Destructuring phone and password from request body
 
     try {
-        const query = 'SELECT user_id, user_type, user_name, phone FROM User WHERE phone = ? AND password = ?';
+        const query = 'SELECT user_id, user_type, user_name,user_phone,user_email FROM Customer WHERE user_phone = ? AND user_password = ?';
         const [rows] = await db.query(query, [phone, password]);
 
         if (rows.length > 0) {
@@ -30,16 +30,16 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const { username, phone, email, password } = req.body;
+    const { username, phone, email, password ,wallet} = req.body;
 
     // Validate input data
-    if (!username || !phone || !email || !password) {
-        return res.status(400).json({ message: "All fields (username, phone, email, password) are required" });
+    if (!username || !phone || !email || !password || !wallet) {
+        return res.status(400).json({ message: "All fields (username, phone, email, password,wallet) are required" });
     }
 
     try {
         // Check for existing user by phone or email
-        const checkQuery = 'SELECT user_id FROM User WHERE phone = ? OR email = ?';
+        const checkQuery = 'SELECT user_id FROM Customer WHERE user_phone = ? OR user_email = ?';
         const [existingUser] = await db.query(checkQuery, [phone, email]);
 
         if (existingUser.length > 0) {
@@ -47,8 +47,8 @@ router.post('/register', async (req, res) => {
         }
 
         // Insert the new user
-        const insertQuery = 'INSERT INTO User (user_name, phone, email, password, user_type) VALUES (?, ?, ?, ?, ?)';
-        await db.query(insertQuery, [username, phone, email, password, 'c']);
+        const insertQuery = 'INSERT INTO Customer (user_name, user_phone, user_email, user_password, user_type,user_wallet) VALUES (?, ?, ?, ?, ? ,?)';
+        await db.query(insertQuery, [username, phone, email, password, 'c',wallet]);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

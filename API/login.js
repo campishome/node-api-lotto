@@ -11,11 +11,15 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/id', async (req, res) => {
+router.get('/users/:id', async (req, res) => {
     try {
-        const userId = req.query.id;
+        const userId = req.params.id;
         const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type,user_image FROM Customer WHERE user_id = ?', [userId]);
-        res.json(rows);
+        if (rows.length > 0) {
+            res.json(rows[0]);
+        } else {
+            res.status(404).send('User not found');
+        }
     } catch (error) {
         res.status(500).send('Error fetching user data');
     }

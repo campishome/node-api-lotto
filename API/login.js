@@ -11,6 +11,17 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/id', async (req, res) => {
+    try {
+        const userId = req.query.id;
+        const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type,user_image FROM Customer WHERE user_id = ?', [userId]);
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching user data');
+    }
+});
+
+
 
 router.post('/login', async (req, res) => {
     const { phone, password } = req.body; // Destructuring phone and password from request body

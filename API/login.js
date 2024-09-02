@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     const { username, phone, email, password ,wallet} = req.body;
-
+    const image = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
     // Validate input data
     if (!username || !phone || !email || !password || !wallet) {
         return res.status(400).json({ message: "All fields (username, phone, email, password,wallet) are required" });
@@ -48,8 +48,8 @@ router.post('/register', async (req, res) => {
         }
 
         // Insert the new user
-        const insertQuery = 'INSERT INTO Customer (user_name, user_phone, user_email, user_password, user_type,user_wallet) VALUES (?, ?, ?, ?, ? ,?)';
-        await db.query(insertQuery, [username, phone, email, password, 'c',wallet]);
+        const insertQuery = 'INSERT INTO Customer (user_name, user_phone, user_email, user_password, user_type, user_wallet , user_image) VALUES (?, ?, ?, ?, ? ,?,?)';
+        await db.query(insertQuery, [username, phone, email, password, 'c',wallet, image]);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

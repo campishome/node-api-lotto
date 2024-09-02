@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 router.get('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const [rows] = await db.query('SELECT user_id,user_name,user_phone,user_email,user_wallet,user_type,user_image FROM Customer WHERE user_id = ?', [userId]);
+        const [rows] = await db.query('SELECT user_id, user_name, user_phone, user_email, user_wallet, user_type, user_image FROM Customer WHERE user_id = ?', [userId]);
         if (rows.length > 0) {
             res.json(rows[0]);
         } else {

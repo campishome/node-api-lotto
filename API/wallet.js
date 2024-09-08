@@ -31,7 +31,7 @@ router.post('/withdraw', async (req, res) => {
 
         if (amount > currentBalance) {
             console.log('Insufficient funds'); // Log for debugging
-            return res.status(400).json({ message: 'Insufficient funds' });
+            return res.status(400).json({ message: 'มันจะถอนปายด้ายยางไงว้า เงินมันมีนิดเดียวน้า โผมว่ามันถอนม่ายด้าย' });
         }
 
         const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet - ? WHERE user_id = ?';

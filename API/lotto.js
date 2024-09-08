@@ -26,3 +26,5 @@ router.post('/createLotto', async (req, res) => {
         res.status(500).json({ message: 'Error creating lotto', error: error.message });
     }
 });
+
+module.exports = { router };

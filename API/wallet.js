@@ -6,9 +6,8 @@ router.post('/add_money', async (req, res) => {
     const { userId,amount } = req.body;
 
     try {
-        const updateStatus = 'UPDATE Customer SET user_wallet = user_wallet + ? WHERE user_id = ?';
-        await db.query(updateStatus, [userId,amount]);
-
+        const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet + ? WHERE user_id = ?';
+        await db.query(updateWallet, [amount,userId]);
 
         res.status(201).json({ message: 'Add money successfully' });
     } catch (error) {

@@ -38,6 +38,6 @@ app.use(bodyParser.json());
 app.use("/", testRouter); 
 app.use("/users", loginRouter);
 app.use("/shows", showRouter);
-app.use("/lotto", loginRouter); 
+app.use("/lotto", lottoRouter); 
 
 module.exports = app;

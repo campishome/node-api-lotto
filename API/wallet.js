@@ -30,7 +30,7 @@ router.post('/withdraw', async (req, res) => {
         const currentBalance = user.user_wallet;
 
         if (amount > currentBalance) {
-            return res.status(400).json({ message: 'มันจะถอนไปด้ายยางงายวะ เงินมันมีนิ๊ดเดียวเองวะ โผมว่ามันถอนไปม่ายด้ายย' });
+            return res.status(400).json({ message: 'too broke to withdraw with this much money' });
         }else{
             const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet - ? WHERE user_id = ?';
             await db.query(updateWallet, [amount,userId]);

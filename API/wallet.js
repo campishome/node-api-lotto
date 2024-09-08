@@ -27,12 +27,12 @@ router.post('/withdraw', async (req, res) => {
 
         if (amount > currentBalance) {
             return res.status(400).json({ message: 'มันจะถอนไปด้ายยางงายวะ เงินมันมีนิ๊ดเดียวเองวะ โผมว่ามันถอนไปม่ายด้ายย' });
+        }else{
+            const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet - ? WHERE user_id = ?';
+            await db.query(updateWallet, [amount,userId]);
+
+            return res.status(201).json({ message: 'Withdraw successfully' });
         }
-
-        const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet - ? WHERE user_id = ?';
-        await db.query(updateWallet, [amount,userId]);
-
-        res.status(201).json({ message: 'Withdraw successfully' });
     } catch (error) {
         console.error('Withdraw Error:', error.message); // Log error details
         res.status(500).json({ message: 'Withdraw Error', error: error.message });

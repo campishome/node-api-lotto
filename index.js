@@ -21,19 +21,6 @@ app.listen(PORT, () => {
 });
 
  
-// app.get('/', (req, res) => {
-//     res.send('Welcome to my API UWU.');
-// });
-
-// app.get('/users', async (req, res) => {
-//     try {
-//         const [rows] = await db.query('SELECT * FROM User');
-//         res.json(rows);
-//     } catch (error) {
-//         res.status(500).send('Error fetching users');
-//     }
-// });
-
 app.use(bodyParser.json());
 app.use("/", testRouter); 
 app.use("/users", loginRouter);

@@ -22,8 +22,12 @@ router.post('/withdraw', async (req, res) => {
     try {
         const checkBalanceQuery = 'SELECT user_wallet FROM Customer WHERE user_id = ?';
         const [user] = await db.query(checkBalanceQuery, [userId]);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-        const currentBalance = user.user_wallet;//-----*
+        const currentBalance = user.user_wallet;
 
         if (amount > currentBalance) {
             return res.status(400).json({ message: 'มันจะถอนไปด้ายยางงายวะ เงินมันมีนิ๊ดเดียวเองวะ โผมว่ามันถอนไปม่ายด้ายย' });

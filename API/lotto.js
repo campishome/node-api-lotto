@@ -27,4 +27,31 @@ router.post('/createLotto', async (req, res) => {
     }
 });
 
+router.post('/buyLotto', async (req, res) => {
+    const { lottoId,userId } = req.body;
+
+    try {
+        // Check for existing lottoId and userId
+        const checkQueryLotto = 'SELECT lotto_number FROM LottoAll WHERE lotto_id = ?';
+        const [existingLotto] = await db.query(checkQueryLotto, [lottoId]);
+        const checkQueryUser = 'SELECT user_name FROM Customer WHERE user_id = ?';
+        const [existingUser] = await db.query(checkQueryUser, [userId]);
+        
+
+        if (existingUser.length <= 0 || existingLotto.length <= 0) {
+            return res.status(400).json({ message: 'Lotto or User not exists' });
+        }
+
+
+        // Insert the new user
+        const insertQuery = 'INSERT INTO LottoBought (lotto_id, user_id) VALUES (?, ?)';
+        await db.query(insertQuery, [lottoId,userId]);
+
+        res.status(201).json({ message: 'Purchase successfully' });
+    } catch (error) {
+        console.error('Error creating lotto:', error.message); // Log error details
+        res.status(500).json({ message: 'Purchase Error', error: error.message });
+    }
+});
+
 module.exports = { router };

@@ -47,6 +47,11 @@ router.post('/buyLotto', async (req, res) => {
         const insertQuery = 'INSERT INTO LottoBought (lotto_id, user_id) VALUES (?, ?)';
         await db.query(insertQuery, [lottoId,userId]);
 
+        const lottoStatus = "ถูกซื้อไปแล้ว"
+        const updateStatus = 'UPDATE LottoAll SET lotto_status = ? WHERE lotto_id = ?';
+        await db.query(updateStatus, [lottoStatus,lottoId]);
+
+
         res.status(201).json({ message: 'Purchase successfully' });
     } catch (error) {
         console.error('Error creating lotto:', error.message); // Log error details

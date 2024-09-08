@@ -17,7 +17,7 @@ router.post('/createLotto', async (req, res) => {
         }
 
         // Insert the new user
-        const insertQuery = 'INSERT INTO Lotto (lotto_number, lotto_status) VALUES (?, ?)';
+        const insertQuery = 'INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)';
         await db.query(insertQuery, [lottoNumber,lottoStatus]);
 
         res.status(201).json({ message: 'Creating lotto successfully' });

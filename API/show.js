@@ -10,4 +10,5 @@ router.get('/', async (req, res) => {
         res.status(500).send('Error fetching email');
     }
 });
+
 module.exports = { router };

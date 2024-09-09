@@ -27,6 +27,6 @@ app.use("/", testRouter);
 app.use("/users", loginRouter);
 app.use("/lotto", lottoRouter);
 app.use("/wallet", walletRouter);
-app.use("/shows", walletRouter); 
+app.use("/shows", showRouter); 
 
 module.exports = app;

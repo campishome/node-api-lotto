@@ -9,6 +9,7 @@ const loginRouter = require("./API/login").router;
 const testRouter = require("./API/test").router;
 const lottoRouter = require("./API/lotto").router;
 const walletRouter = require("./API/wallet").router;
+const showRouter = require("./API/show").router;
 
 app.use(
     cors({
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.use("/", testRouter); 
 app.use("/users", loginRouter);
 app.use("/lotto", lottoRouter);
-app.use("/wallet", walletRouter); 
+app.use("/wallet", walletRouter);
+app.use("/shows", walletRouter); 
 
 module.exports = app;

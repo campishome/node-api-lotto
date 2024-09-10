@@ -79,19 +79,10 @@ router.post('/start', async (req, res) => {
         const lottoNumbers = generateUniqueLottoNumbers();
         const status = 'ยังไม่ถูกซื้อ';
 
-        await db.beginTransaction();
-
         const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
-
-        // สร้าง array ของ Promises
         const insertPromises = lottoNumbers.map(number => {
             return db.execute(insertLottoQuery, [number, status]);
         });
-
-        // รอให้ทุก Promise เสร็จสิ้น
-        await Promise.all(insertPromises);
-
-        await db.commit();
 
         res.json({ lottoNumbers });
     } catch (error) {

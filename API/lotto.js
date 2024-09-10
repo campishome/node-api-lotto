@@ -76,30 +76,27 @@ const generateUniqueLottoNumbers = () => { //create random number
 
 router.post('/start', async (req, res) => {
     try {
-        // สร้างเลขลอตเตอรี่ 100 ชุด
         const lottoNumbers = generateUniqueLottoNumbers();
         const status = 'ยังไม่ถูกซื้อ';
 
-        // เริ่มต้น transaction ในการแทรกข้อมูล
         await db.beginTransaction();
 
-        // คำสั่ง SQL สำหรับการแทรกข้อมูลทีละแถว
         const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
 
-        // ลูปเพื่อแทรกตัวเลขทั้งหมดเข้าไปในฐานข้อมูล
-        for (let number of lottoNumbers) {
-            await db.execute(insertLottoQuery, [number, status]);
-        }
+        // สร้าง array ของ Promises
+        const insertPromises = lottoNumbers.map(number => {
+            return db.execute(insertLottoQuery, [number, status]);
+        });
 
-        // ยืนยันการแทรกข้อมูล
+        // รอให้ทุก Promise เสร็จสิ้น
+        await Promise.all(insertPromises);
+
         await db.commit();
 
-        // ส่งคืนเลขลอตเตอรี่ที่สร้าง
         res.json({ lottoNumbers });
     } catch (error) {
-        // หากเกิดข้อผิดพลาด ให้ยกเลิก transaction
         await db.rollback();
-        console.error('Error:', error.message); // แสดงข้อความข้อผิดพลาด
+        console.error('Error:', error.message);
         res.status(500).send('Error generating and inserting lotto numbers');
     }
 });

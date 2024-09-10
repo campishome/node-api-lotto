@@ -80,10 +80,11 @@ router.post('/start', async (req, res) => {
         const status = 'ยังไม่ถูกซื้อ';
 
         const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
-        const insertPromises = lottoNumbers.map(number => {
-            return db.execute(insertLottoQuery, [number, status]);
-        });
 
+        for (let number of lottoNumbers) {
+            await db.execute(insertLottoQuery, [number, status]);
+        }
+        
         res.json({ lottoNumbers });
     } catch (error) {
         await db.rollback();

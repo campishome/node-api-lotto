@@ -10,7 +10,7 @@ const testRouter = require("./API/test").router;
 const lottoRouter = require("./API/lotto").router;
 const walletRouter = require("./API/wallet").router;
 const showRouter = require("./API/show").router;
-
+const profileRouter = require("./API/profile").router;
 app.use(
     cors({
         origin: "*",
@@ -27,6 +27,7 @@ app.use("/", testRouter);
 app.use("/users", loginRouter);
 app.use("/lotto", lottoRouter);
 app.use("/wallet", walletRouter);
-app.use("/shows", showRouter); 
+app.use("/shows", showRouter);
+app.use("/profile", profileRouter); 
 
 module.exports = app;

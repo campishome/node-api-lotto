@@ -66,7 +66,7 @@ router.post('/buyLotto', async (req, res) => {
 const generateUniqueLottoNumbers = () => { //create random number  
     const lottoNumbers = new Set();
 
-    while (lottoNumbers.size < 100) {
+    while (lottoNumbers.size < 50) {
         const number = Math.floor(100000 + Math.random() * 900000).toString();
         lottoNumbers.add(number);
     }

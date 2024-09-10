@@ -75,22 +75,29 @@ const generateUniqueLottoNumbers = () => { //create random number
 };
 
 router.post('/start', async (req, res) => {
+    const connection = await db.getConnection(); // Get a connection from the pool
     try {
+        await connection.beginTransaction(); // Start transaction
+
         const lottoNumbers = generateUniqueLottoNumbers();
         const status = 'ยังไม่ถูกซื้อ';
 
         const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
 
         for (let number of lottoNumbers) {
-            await db.execute(insertLottoQuery, [number, status]);
+            await connection.execute(insertLottoQuery, [number, status]);
         }
         
+        await connection.commit(); // Commit transaction
         res.json({ lottoNumbers });
     } catch (error) {
-        await db.rollback();
-        console.error('Error:', error.message);
+        await connection.rollback(); // Rollback transaction
+        console.error('Error:', error); // Log the entire error object
         res.status(500).send('Error generating and inserting lotto numbers');
+    } finally {
+        connection.release(); // Release the connection back to the pool
     }
 });
+
 
 module.exports = { router };

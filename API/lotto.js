@@ -107,6 +107,9 @@ router.post('/buyLotto', async (req, res) => {
         const updateStatus = 'UPDATE LottoAll SET lotto_status = ? WHERE lotto_id = ?';
         await db.query(updateStatus, [lottoStatus,lottoId]);
 
+        const updateWallet = 'UPDATE Customer SET user_wallet = ? - 100 WHERE user_id = ?';
+        await db.query(updateWallet, [currentBalance,userId]);
+
         res.status(201).json({ message: 'Purchase successfully' });
     } catch (error) {
         console.error('Error creating lotto:', error.message); // Log error details

@@ -126,39 +126,53 @@ router.post('/buyLotto', async (req, res) => {
     }
 });
 
-const generateUniqueLottoNumbers = () => { //create random number  
-    const lottoNumbers = new Set();
+// const generateUniqueLottoNumbers = () => { //create random number  
+//     const lottoNumbers = new Set();
 
-    while (lottoNumbers.size < 50) {
-        const number = Math.floor(100000 + Math.random() * 900000).toString();
-        lottoNumbers.add(number);
-    }
+//     while (lottoNumbers.size < 50) {
+//         const number = Math.floor(100000 + Math.random() * 900000).toString();
+//         lottoNumbers.add(number);
+//     }
 
-    return Array.from(lottoNumbers);
-};
+//     return Array.from(lottoNumbers);
+// };
 
-router.post('/start', async (req, res) => {
-    const connection = await db.getConnection(); // Get a connection from the pool
-    try {
-        await connection.beginTransaction(); // Start transaction
+// router.post('/start', async (req, res) => {
+//     const connection = await db.getConnection(); // Get a connection from the pool
+//     try {
+//         await connection.beginTransaction(); // Start transaction
 
-        const lottoNumbers = generateUniqueLottoNumbers();
-        const status = 'ยังไม่ถูกซื้อ';
+//         const lottoNumbers = generateUniqueLottoNumbers();
+//         const status = 'ยังไม่ถูกซื้อ';
 
-        const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
+//         const insertLottoQuery = `INSERT INTO LottoAll (lotto_number, lotto_status) VALUES (?, ?)`;
 
-        for (let number of lottoNumbers) {
-            await connection.execute(insertLottoQuery, [number, status]);
-        }
+//         for (let number of lottoNumbers) {
+//             await connection.execute(insertLottoQuery, [number, status]);
+//         }
         
-        await connection.commit(); // Commit transaction
-        res.json({ lottoNumbers });
+//         await connection.commit(); // Commit transaction
+//         res.json({ lottoNumbers });
+//     } catch (error) {
+//         await connection.rollback(); // Rollback transaction
+//         console.error('Error:', error); // Log the entire error object
+//         res.status(500).send('Error generating and inserting lotto numbers');
+//     } finally {
+//         connection.release(); // Release the connection back to the pool
+//     }
+// });
+
+router.delete('/deleteAllLottos', async (req, res) => {
+    try {
+        const [deleteBought] = await db.query('DELETE FROM LottoBought');
+        const [deleteAll] = await db.query('DELETE FROM LottoAll');
+        if (deleteBought.affectedRows > 0 || deleteAll.affectedRows > 0) {
+            res.send(`All lotto records deleted successfully.`);
+        } else {
+            res.status(404).send('No lotto records found to delete.');
+        }
     } catch (error) {
-        await connection.rollback(); // Rollback transaction
-        console.error('Error:', error); // Log the entire error object
-        res.status(500).send('Error generating and inserting lotto numbers');
-    } finally {
-        connection.release(); // Release the connection back to the pool
+        res.status(500).send('Error deleting lotto');
     }
 });
 

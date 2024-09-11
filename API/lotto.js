@@ -11,6 +11,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/allNumber', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT lotto_number FROM LottoAll');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching lotto');
+    }
+});
+
 router.post('/createLotto', async (req, res) => {
     const { lottoNumber } = req.body;
 

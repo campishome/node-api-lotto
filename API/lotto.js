@@ -20,6 +20,15 @@ router.get('/allNumber', async (req, res) => {
     }
 });
 
+router.get('/allPurchase', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM LottoBought');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching lotto');
+    }
+});
+
 router.post('/statusCheck', async (req, res) => {
     const { lotto_number } = req.body; // Destructuring phone and password from request body
 

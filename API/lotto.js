@@ -63,8 +63,12 @@ router.post('/createLotto', async (req, res) => {
 
 router.post('/buyLotto', async (req, res) => {
     const { lottoId,userId } = req.body;
-
+    //check ว่าเงินพอซื้อไหม
+    //พอ    insert lottoBought res สำเร็จ
+    //ไม่พอ  res เติมเงิน
     try {
+        const checkQueryWallet = 'SELECT user_wallet FROM Customer WHERE user_id = ?';
+        const [existingWallet] = await db.query(checkQueryWallet, [userId]);
         const checkQueryLotto = 'SELECT lotto_number FROM LottoAll WHERE lotto_id = ?';
         const [existingLotto] = await db.query(checkQueryLotto, [lottoId]);
         const checkQueryUser = 'SELECT user_name FROM Customer WHERE user_id = ?';
@@ -74,6 +78,12 @@ router.post('/buyLotto', async (req, res) => {
         if (existingUser.length <= 0 || existingLotto.length <= 0) {
             return res.status(400).json({ message: 'Lotto or User not exists' });
         }
+        const currentBalance = existingWallet[0].user_wallet;
+        
+        if (currentBalance - 100 < 0) { //ใบละ 100
+            console.log('เงินไม่พอ กรุณาเติมเงิน'); // Log for debugging
+            return res.status(400).json({ message: 'มันจะซื้อปายด้ายยางไงว้า เงินมันมีนิดเดียวน้า โผมว่ามันซื้อม่ายด้าย' });
+        }
 
         const insertQuery = 'INSERT INTO LottoBought (lotto_id, user_id) VALUES (?, ?)';
         await db.query(insertQuery, [lottoId,userId]);
@@ -81,7 +91,6 @@ router.post('/buyLotto', async (req, res) => {
         const lottoStatus = "ถูกซื้อไปแล้ว"
         const updateStatus = 'UPDATE LottoAll SET lotto_status = ? WHERE lotto_id = ?';
         await db.query(updateStatus, [lottoStatus,lottoId]);
-
 
         res.status(201).json({ message: 'Purchase successfully' });
     } catch (error) {

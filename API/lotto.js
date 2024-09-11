@@ -78,14 +78,20 @@ router.post('/buyLotto', async (req, res) => {
     try {
         const checkQueryWallet = 'SELECT user_wallet FROM Customer WHERE user_id = ?';
         const [existingWallet] = await db.query(checkQueryWallet, [userId]);
-        const checkQueryLotto = 'SELECT lotto_number FROM LottoAll WHERE lotto_id = ?';
+
+        const checkQueryLotto = 'SELECT lotto_number,lotto_status FROM LottoAll WHERE lotto_id = ?';
         const [existingLotto] = await db.query(checkQueryLotto, [lottoId]);
+
         const checkQueryUser = 'SELECT user_name FROM Customer WHERE user_id = ?';
         const [existingUser] = await db.query(checkQueryUser, [userId]);
         
 
         if (existingUser.length <= 0 || existingLotto.length <= 0) {
             return res.status(400).json({ message: 'Lotto or User not exists' });
+        }
+
+        if(existingLotto[0].lotto_status == "ถูกซื้อไปแล้ว"){
+            return res.status(400).json({ message: 'Lotto has been bought' });
         }
         const currentBalance = existingWallet[0].user_wallet;
         

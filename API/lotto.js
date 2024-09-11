@@ -24,7 +24,7 @@ router.post('/statusCheck', async (req, res) => {
     const { lotto_number } = req.body; // Destructuring phone and password from request body
 
     try {
-        const query = 'SELECT * FROM LottoAll WHERE lotto_number = ?';
+        const query = 'SELECT lotto_status FROM LottoAll WHERE lotto_number = ?';
         const [rows] = await db.query(query, [lotto_number]);
 
         if (rows.length > 0) {

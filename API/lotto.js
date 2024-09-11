@@ -20,6 +20,24 @@ router.get('/allNumber', async (req, res) => {
     }
 });
 
+router.post('/statusCheck', async (req, res) => {
+    const { lotto_number } = req.body; // Destructuring phone and password from request body
+
+    try {
+        const query = 'SELECT * FROM LottoAll WHERE lotto_number = ?';
+        const [rows] = await db.query(query, [lotto_number]);
+
+        if (rows.length > 0) {
+            res.json(rows[0]); // Return the first matching number
+        } else {
+            res.status(404).send('Number not found');
+        }
+    } catch (error) {
+        console.error('Error fetching Lotto:', error.message); // Log the error for debugging
+        res.status(500).send('Error fetching Lotto');
+    }
+});
+
 router.post('/createLotto', async (req, res) => {
     const { lottoNumber } = req.body;
 

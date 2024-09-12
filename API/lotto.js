@@ -20,6 +20,15 @@ router.get('/allNumber', async (req, res) => {
     }
 });
 
+router.get('/allBought', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT lotto_number FROM LottoAll WHERE lotto_status = "ถูกซื้อไปแล้ว"');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching lotto');
+    }
+});
+
 router.get('/readyToSell', async (req, res) => {
     try {
         const [rows] = await db.query('SELECT lotto_id,lotto_number FROM LottoAll WHERE lotto_status != "ถูกซื้อไปแล้ว"');

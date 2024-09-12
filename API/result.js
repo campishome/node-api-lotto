@@ -4,7 +4,7 @@ const db = require("../dbconnect");
 
 
 router.post('/insertResult', async (req, res) => {
-    const { lottoId } = req.body;
+    const { lottoNumber } = req.body;
 
     try {
         // Step 1: Fetch all records from LottoResult ordered by result_id
@@ -21,7 +21,7 @@ router.post('/insertResult', async (req, res) => {
         const nextResultId = (maxResult[0].max_id || 0) + 1; // Start from 1 if no rows exist
 
         // Step 5: Insert the new lotto result with a manually incremented result_id
-        await db.query('INSERT INTO LottoResult (result_id, lotto_id) VALUES (?, ?)', [nextResultId, lottoId]);
+        await db.query('INSERT INTO LottoResult (result_id, result_number)) VALUES (?, ?)', [nextResultId, lottoNumber]);
 
         res.status(201).json({ message: 'Lotto result inserted successfully' });
     } catch (error) {

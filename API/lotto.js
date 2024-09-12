@@ -204,7 +204,7 @@ router.get('/check/:id', async (req, res) => {
         const userId = req.params.id;
         const [rows] = await db.query('SELECT LottoBought.lotto_id,LottoAll.lotto_number FROM LottoBought LEFT JOIN LottoAll ON LottoBought.lotto_id = LottoAll.lotto_id WHERE LottoBought.user_id = ?', [userId]);
         if (rows.length > 0) {
-            res.json(rows[0]);
+            res.json(rows);
         } else {
             res.status(404).send('User are not bought any lotto');
         }

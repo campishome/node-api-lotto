@@ -185,5 +185,20 @@ router.delete('/deleteAllLottos', async (req, res) => {
     }
 });
 
+router.post('/myLotto', async (req, res) => {
+    const { userId } = req.body;
+
+    try {
+        const checkQuery = 'SELECT LottoAll.lotto_id ,LottoAll.lotto_number,LottoBought.user_id FROM LottoBought INNER JOIN LottoALL WHERE LottoBOught.user_id = ?';
+        const [existingLotto] = await db.query(checkQuery, [userId]);
+               
+        res.json(existingLotto);
+    } catch (error) {
+        console.error('Error creating lotto:', error.message); // Log error details
+        res.status(500).json({ message: 'Error creating lotto', error: error.message });
+    }
+});
+
+
 
 module.exports = { router };

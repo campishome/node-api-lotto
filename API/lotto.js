@@ -189,7 +189,7 @@ router.post('/myLotto', async (req, res) => {
     const { userId } = req.body;
 
     try {
-        const checkQuery = 'SELECT LottoBought.lotto_id ,LottoAll.lotto_number,LottoBought.user_id FROM LottoBought LEFT JOIN LottoAll WHERE LottoBought.user_id = ?';
+        const checkQuery = 'SELECT LottoBought.lotto_id ,LottoAll.lotto_number,LottoBought.user_id FROM LottoBought LEFT JOIN LottoAll ON LottoBought.lotto_id = LottoAll.lotto_id WHERE LottoBought.user_id = ?';
         const [existingLotto] = await db.query(checkQuery, [userId]);
                
         res.json(existingLotto);

@@ -9,7 +9,8 @@ router.post('/insertResult', async (req, res) => {
     try {
         const resultCount = await LottoResult.count();
 
-        if (resultCount >= 5) {
+        const [checkResult] = await db.query('SELECT * FROM LottoResult');
+        if (checkResult.length >= 5) {
             await LottoResult.destroy({
                 order: [['result_id', 'ASC']],
                 limit: 1

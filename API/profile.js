@@ -17,4 +17,17 @@ router.put('/update/:id', async (req, res) => {
     }
 });
 
+router.delete('/deleteAllUsers', async (req, res) => {
+    try {
+        const [deleteUsers] = await db.query('DELETE FROM Customer');
+        if (deleteUsers.affectedRows > 0 || deleteUsers.affectedRows > 0) {
+            res.send(`All lotto records deleted successfully.`);
+        } else {
+            res.status(404).send('No lotto records found to delete.');
+        }
+    } catch (error) {
+        res.status(500).send('Error deleting lotto');
+    }
+});
+
 module.exports = { router };

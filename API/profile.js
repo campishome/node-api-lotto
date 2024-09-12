@@ -19,7 +19,7 @@ router.put('/update/:id', async (req, res) => {
 
 router.delete('/deleteAllUsers', async (req, res) => {
     try {
-        const [deleteUsers] = await db.query('DELETE FROM Customer');
+        const [deleteUsers] = await db.query("DELETE FROM Customer WHERE user_type = 'c'");
         if (deleteUsers.affectedRows > 0 || deleteUsers.affectedRows > 0) {
             res.send(`All lotto records deleted successfully.`);
         } else {

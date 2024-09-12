@@ -3,6 +3,15 @@ const router = express.Router();
 const db = require("../dbconnect");
 
 
+router.get('/', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM LottoResult');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send('Error fetching LottoResult');
+    }
+});
+
 router.post('/insertResult', async (req, res) => {
     const { lottoNumber } = req.body;
 

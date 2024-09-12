@@ -185,6 +185,19 @@ router.delete('/deleteAllLottos', async (req, res) => {
     }
 });
 
+router.delete('/deleteResult', async (req, res) => {
+    try {
+        const [deleteResult] = await db.query('DELETE FROM LottoResult');
+        if (deleteResult.affectedRows > 0) {
+            res.send(`All LottoResult records deleted successfully.`);
+        } else {
+            res.status(404).send('No LottoResult records found to delete.');
+        }
+    } catch (error) {
+        res.status(500).send('Error deleting LottoResult');
+    }
+});
+
 router.post('/myLotto', async (req, res) => {
     const { userId } = req.body;
 

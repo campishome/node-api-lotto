@@ -226,6 +226,20 @@ router.get('/check/:id', async (req, res) => {
     }
 });
 
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const lottoId = req.params.id;
+        const [deleteThisLotto] = await db.query('DELETE FROM LottoBought WHERE lotto_id = ?',[lottoId]);
+        const [deleteLottoInAll] = await db.query('DELETE FROM LottoAll WHERE lotto_id = ?',[lottoId]);
+        if (deleteThisLotto.affectedRows > 0 && deleteLottoInAll.affectedRows > 0) {
+            res.send(`Lotto deleted successfully.`);
+        } else {
+            res.status(404).send('No Lotto found to delete.');
+        }
+    } catch (error) {
+        res.status(500).send('Error deleting Lotto');
+    }
+});
 
 
 

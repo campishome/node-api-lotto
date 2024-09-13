@@ -3,15 +3,28 @@ const router = express.Router();
 const db = require("../dbconnect");
 
 router.post('/add_money', async (req, res) => {
-    const { userId,amount } = req.body;
+    const { userId, amount } = req.body;
+
+    // Validate input
+    if (typeof userId !== 'number' || typeof amount !== 'number' || amount <= 0) {
+        return res.status(400).json({ message: 'Invalid input' });
+    }
 
     try {
+        // Update wallet
         const updateWallet = 'UPDATE Customer SET user_wallet = user_wallet + ? WHERE user_id = ?';
-        await db.query(updateWallet, [amount,userId]);
+        const result = await db.query(updateWallet, [amount, userId]);
 
-        res.status(201).json({ message: 'Deposit successfully' });
+        // Check if the update affected any rows
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Success response
+        res.status(200).json({ message: 'Deposit successfully' });
     } catch (error) {
-        console.error('Deposit Error:', error.message); // Log error details
+        // Log the error and send a response
+        console.error('Deposit Error:', error.message);
         res.status(500).json({ message: 'Deposit Error', error: error.message });
     }
 });
